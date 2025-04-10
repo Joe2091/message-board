@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Message Board</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <h1>Message Board</h1>
+
+    <form action="/message" method="POST">
+      <input name="name" placeholder="Name" required /><br />
+      <textarea name="message" placeholder="Message" required></textarea><br />
+      <button type="submit">Post</button>
+    </form>
+
+    <h2>Messages</h2>
+    <ul>
+      <% messages.forEach(m => { %>
+      <li><strong><%= m.name %></strong>: <%= m.message %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
