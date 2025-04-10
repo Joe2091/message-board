@@ -22,8 +22,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/message', (req, res) => {
-  const { name, message } = req.body;
-  db.run('INSERT INTO messages (name, message) VALUES (?, ?)', [name, message], (err) => {
+  const name = req.body.name;
+  const message = req.body.message;
+
+  //SQL Injection
+  const query = `INSERT INTO messages (name, message) VALUES ('${name}', '${message}')`;
+  db.run(query, (err) => {
+    console.log('Executing query:', query);
     if (err) {
       return res.status(500).send('Failed to post message');
     }
