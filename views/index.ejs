@@ -16,7 +16,7 @@
     <h2>Messages</h2>
     <ul>
       <% messages.forEach(m => { %>
-      <li><strong><%= m.name %></strong>: <%= m.message %></li>
+      <li><strong><%= m.name %></strong>: <%- m.message %></li>
       <% }); %>
     </ul>
     <% if (reflected) { %>
