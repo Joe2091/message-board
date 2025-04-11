@@ -22,5 +22,14 @@
     <% if (reflected) { %>
     <p>Reflected: <%- reflected %></p>
     <% } %>
+    <script>
+      const hash = window.location.hash.substring(1); //Dom Based XSS
+
+      if (hash) {
+        const container = document.createElement('div');
+        container.innerHTML = 'Hash content: ' + hash;
+        document.body.appendChild(container);
+      }
+    </script>
   </body>
 </html>
