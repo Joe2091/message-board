@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 app.post('/message', (req, res) => {
   const { name, message } = req.body;
   db.run('INSERT INTO messages (name, message) VALUES (?, ?)', [name, message], (err) => {
+    // Correct Parameterized Queries to avoid SQL Injection
     if (err) {
       return res.status(500).send('Failed to post message');
     }
