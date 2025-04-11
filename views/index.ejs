@@ -17,7 +17,10 @@
     <ul>
       <% messages.forEach(m => { %>
       <li><strong><%= m.name %></strong>: <%= m.message %></li>
+      <!-- Escaped Ouput-->
       <% }); %>
     </ul>
+    container.textContent = "Hash content: " + hash;
+    <!-- Dom-Based XSS Fix, Prevents html/js from being executed-->
   </body>
 </html>
