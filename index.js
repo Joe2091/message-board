@@ -9,6 +9,24 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Create user table
+db.run(`CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)`);
+
+app.get('/login', (req, res) => {
+  res.render('index', { messages: [], reflected: '', showLogin: true });
+});
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Stores credentials in plain text (SENSITIVE DATA EXPOSURE)
+  db.run(`INSERT INTO users (username, password) VALUES ('${username}', '${password}')`);
+
+  console.log(`[!] Login stored: ${username} - ${password}`);
+
+  res.send(`<p>Welcome ${username}. (Password stored as plain text)</p><a href="/">Go back</a>`);
+});
+
 // Create table
 db.run('CREATE TABLE IF NOT EXISTS messages (name TEXT, message TEXT)');
 
