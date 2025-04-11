@@ -13,11 +13,13 @@ app.use(express.static('public'));
 db.run('CREATE TABLE IF NOT EXISTS messages (name TEXT, message TEXT)');
 
 app.get('/', (req, res) => {
+  const reflected = req.query.msg || ''; //XSS Reflected
   db.all('SELECT * FROM messages', [], (err, rows) => {
+    console.log('Reflected param:', reflected);
     if (err) {
       return res.status(500).send('Database error');
     }
-    res.render('index', { messages: rows });
+    res.render('index', { messages: rows, reflected: reflected });
   });
 });
 

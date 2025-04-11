@@ -19,5 +19,8 @@
       <li><strong><%= m.name %></strong>: <%= m.message %></li>
       <% }); %>
     </ul>
+    <% if (reflected) { %>
+    <p>Reflected: <%- reflected %></p>
+    <% } %>
   </body>
 </html>
