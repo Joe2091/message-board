@@ -11,6 +11,7 @@ const morgan = require('morgan');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 
+app.use(helmet());
 app.use(morgan('combined'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,8 +41,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(helmet());
-
 // Create table
 db.run('CREATE TABLE IF NOT EXISTS messages (name TEXT, message TEXT)');
 
@@ -60,6 +59,10 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
   password TEXT
 )`);
 
+app.get('/auth', (req, res) => {
+  res.render('auth', { csrfToken: req.csrfToken() });
+});
+
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
@@ -67,9 +70,9 @@ app.post('/register', async (req, res) => {
 
   db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
     if (err) {
-      return res.send('Error: user might already exist.');
+      return res.redirect('/auth');
     }
-    res.send('Registration successful. <a href="/">Go to login</a>');
+    res.redirect('/auth'); // Registration successful, return to login form
   });
 });
 
@@ -78,15 +81,15 @@ app.post('/login', (req, res) => {
 
   db.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
     if (err || !user) {
-      return res.send('Invalid username or password.');
+      return res.redirect('/auth');
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       req.session.username = user.username;
-      res.send(`Welcome ${user.username}. <a href="/">Home</a>`);
+      res.redirect('/');
     } else {
-      res.send('Invalid username or password.');
+      res.redirect('/auth');
     }
   });
 });
