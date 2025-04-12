@@ -6,7 +6,12 @@ const app = express();
 const db = new sqlite3.Database('db.sqlite3');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const csrf = require('csurf');
+const cookieParser = require('cookie-parser');
 
+app.use(morgan('combined'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -24,10 +29,18 @@ app.use(
   })
 );
 
+app.use(cookieParser());
+
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
 app.use((req, res, next) => {
   res.locals.session = req.session;
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
+
+app.use(helmet());
 
 // Create table
 db.run('CREATE TABLE IF NOT EXISTS messages (name TEXT, message TEXT)');
