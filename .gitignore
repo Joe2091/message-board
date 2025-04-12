@@ -1,4 +1,17 @@
-```gitignore
+# Node.js dependencies
 node_modules/
+
+# SQLite database
 db.sqlite3
+
+# Environment variables
 .env
+
+# Logs
+*.log
+npm-debug.log*
+
+# VS Code settings
+.vscode/
+
+
