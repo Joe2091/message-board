@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 // Create table
-db.run('CREATE TABLE IF NOT EXISTS messages (name TEXT, message TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, message TEXT)');
 
 app.get('/', (req, res) => {
   db.all('SELECT * FROM messages', [], (err, rows) => {
@@ -109,6 +109,16 @@ app.post('/message', (req, res) => {
     // Correct Parameterized Queries to avoid SQL Injection
     if (err) {
       return res.status(500).send('Failed to post message');
+    }
+    res.redirect('/');
+  });
+});
+
+app.post('/delete/:id', (req, res) => {
+  const id = req.params.id;
+  db.run('DELETE FROM messages WHERE id = ?', [id], (err) => {
+    if (err) {
+      return res.status(500).send('Failed to delete message');
     }
     res.redirect('/');
   });

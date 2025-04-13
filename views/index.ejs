@@ -31,8 +31,17 @@
     <h2>Messages</h2>
     <ul>
       <% messages.forEach(m => { %>
-      <li><strong><%= m.name %></strong>: <%= m.message %></li>
-      <!-- Escaped Ouput-->
+      <li>
+        <strong><%= m.name %></strong>: <%= m.message %>
+        <!-- Escaped Ouput-->
+        <% if (session.username) { %>
+        <form action="/delete/<%= m.id %>" method="POST" style="display: inline">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button type="submit">Delete</button>
+        </form>
+        <% } %>
+      </li>
+
       <% }); %>
     </ul>
     container.textContent = "Hash content: " + hash;
