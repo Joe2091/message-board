@@ -1,6 +1,6 @@
 # Message Board Web Application
 
-A simple web application using Node.js, Express, and SQLite3. This application has two branches the secure (main) branch and the `insecure` branch which will introduce vulnerabilities such as SQL Injection, XSS Reflected Dom based and stored and Sensitive Data Exposure The `insecure` branch will contain an intentionally vulnerable version for security testing and learning.
+A simple web application using Node.js, Express, and SQLite3. This application has two branches the secure (main) branch and the `insecure` branch which will introduce vulnerabilities such as SQL Injection, XSS Reflected Dom based and stored and Sensitive Data Exposure The `insecure` branch will contain an intentionally vulnerable version for security testing
 
 # How to Run the Application
 
